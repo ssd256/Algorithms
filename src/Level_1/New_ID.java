@@ -1,20 +1,17 @@
 package Level_1;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Scanner;
  
 public class New_ID {
 	
 	public static void main(String[] args) {
-//		Scanner sc = new Scanner(System.in);
-//		new_id = sc.next();
-		
-		String new_id = "...!@BaT#*..y.abcdefghijklm";
+		Scanner sc = new Scanner(System.in);
+		String new_id = sc.next();
 		
 		SetId id = new SetId();
 		// 함수호출
 		 
-		String change_id = id.changeId(new_id);
+		String change_id = id.checkReg(new_id);
 		System.out.println(change_id);
 	}
 }
@@ -37,82 +34,56 @@ class SetId {
 	6단계 new_id의 길이가 16자 이상이면, new_id의 첫 15개의 문자를 제외한 나머지 문자들을 모두 제거합니다.
 	     만약 제거 후 마침표(.)가 new_id의 끝에 위치한다면 끝에 위치한 마침표(.) 문자를 제거합니다.
 	7단계 new_id의 길이가 2자 이하라면, new_id의 마지막 문자를 new_id의 길이가 3이 될 때까지 반복해서 끝에 붙입니다.
- */
-	
-	public String changeId(String str) {
-		
-		str = str.toLowerCase();			// 1단계
-		
-		str = checkReg(str);				// 2~4단계
-						
-		if( str.isEmpty() ) {				// 5단계			
-			str = "a";
-		}
-		
-		
-		int length = str.length();			// 6단계
-		if( length > 15 ) {
-			str = str.substring(0, 14);
-			
-			if( str.matches("(.)$") ) {
-				str = str.replace("(.)$", "");
-			}
-		}
-		else if( length <= 2 ) 
-		{
-			System.out.println("길이 : " + length);
-			
-			while( length == 3 ) {
-				str += str.charAt(length);
-				length = str.length();
-			}
-			System.out.println("길이 : " + length);
-		}
-		
-		return str;
-	}
-	
+ */ 
 	
 	
 	public String checkReg(String str) {
 
 		String tmp = str;
 		
-		System.out.println("1단계 : " + tmp);
+		// 2~4단계에서 걸러줄 정규표현식
+		String reg 		 = "";				// 알파벳 소문자, 숫자, 빼기(-), 밑줄(_), 마침표(.)를 제외한 모든 문자를 제거  => 정규표현식으로 설정하는 부분이 어렵다
+		String reg_dat   = "[.]{2,}";					
+		String dat_start = "^.";						
+		String dat_end   = ".$";	
 		
-		String reg 		 = "[A-Z~!?@#$%^&*()+=/<>{},s]";
-		String reg_dat   = "[.]{2}";					// 3단계
-		String dat_start = "^(.)";						// 4단계_start
-		String dat_end   = "(.)$";	
+		
+		tmp = tmp.toLowerCase();					// 1단계
+		tmp = tmp.replaceAll(reg, "");				// 2단계
+		tmp = tmp.replaceAll(reg_dat, ".");			// 3단계
 		
 		
-//		System.out.println("matches : " + tmp.matches(reg));
-		
-		if( tmp.matches(".*"+reg+".*") ) {
-			tmp = tmp.replace(reg, "");
-			System.out.println("2단계 : " + tmp);
+		char first_ch = tmp.charAt(0);
+		if( first_ch == '.' ) {						// 4단계
+			tmp = tmp.replaceAll(dat_start, "");
 		}
-		if( tmp.matches(".*"+reg_dat+".*") ){
-			tmp = tmp.replace(reg_dat, "");
-			System.out.println("3단계 : " + tmp);
-		}
-		if( tmp.matches(".*"+dat_start+".*") ){
-			tmp = tmp.replace(dat_start, "");
-			System.out.println("4-1 : " + tmp);
-		}
-			
-		if( tmp.matches(".*"+dat_end+".*") ) {
-			tmp = tmp.replace(dat_end, "");
-			System.out.println("4-2 : " + tmp);
+		else {
+			tmp = tmp.replaceAll(dat_end, "");
 		}
 		
-		System.out.println("반환 : " + tmp);
-		str = tmp;
-		return str;
+		
+		tmp = tmp.isEmpty() == true ? "a" : tmp;	// 5단계
+		
+		
+		int lengthT = tmp.length();
+		if( lengthT >= 16 ) {						// 6단계
+			tmp = tmp.substring(0, 15);
+
+			lengthT = tmp.length();
+			if( tmp.charAt(lengthT - 1) == '.' ) {
+				tmp = tmp.replace(".", "");
+			}
+		}
+		
+		
+		if( lengthT <= 2 ) {						// 7단계
+			while( lengthT >= 3 ) {
+				tmp = tmp + tmp.charAt(lengthT);
+			}
+		}
+		
+		return tmp;
 	}
-	
-	
-	
 	
 	
 	
