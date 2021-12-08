@@ -39,7 +39,7 @@ class SetId {
 	 
 	public String checkReg(String str) {
 
-		String tmp = str;
+		String tmp = str; 
 		
 		// 2~4단계에서 걸러줄 정규표현식
 		String reg 		 = "";				// 알파벳 소문자, 숫자, 빼기(-), 밑줄(_), 마침표(.)를 제외한 모든 문자를 제거  => 정규표현식으로 설정하는 부분이 어렵다
