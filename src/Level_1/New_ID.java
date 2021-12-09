@@ -49,7 +49,7 @@ class SetId {
         if(tmp.equals("")) {						// 5단계
        		tmp += "a";	               
         }
-		
+		 
 		
 		int lengthT = tmp.length();
 		if( lengthT >= 16 ) {						// 6단계

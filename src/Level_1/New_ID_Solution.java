@@ -30,7 +30,7 @@ class New_ID_Solution {
 			lengthT = tmp.length();
 			if( tmp.charAt(lengthT - 1) == '.' ) {
 				tmp = tmp.replaceAll("^[.]|[.]$","");
-			}
+			} 
 		}
 		
 		
