@@ -9,7 +9,6 @@ public class New_ID {
 		String new_id = sc.next();
 		
 		SetId id = new SetId();
-		// 함수호출
 		 
 		String change_id = id.checkReg(new_id);
 		System.out.println(change_id);
@@ -41,28 +40,15 @@ class SetId {
 
 		String tmp = str; 
 		
-		// 2~4단계에서 걸러줄 정규표현식
-		String reg 		 = "";				// 알파벳 소문자, 숫자, 빼기(-), 밑줄(_), 마침표(.)를 제외한 모든 문자를 제거  => 정규표현식으로 설정하는 부분이 어렵다
-		String reg_dat   = "[.]{2,}";					
-		String dat_start = "^.";						
-		String dat_end   = ".$";	
-		
-		
 		tmp = tmp.toLowerCase();					// 1단계
-		tmp = tmp.replaceAll(reg, "");				// 2단계
-		tmp = tmp.replaceAll(reg_dat, ".");			// 3단계
-		
-		
-		char first_ch = tmp.charAt(0);
-		if( first_ch == '.' ) {						// 4단계
-			tmp = tmp.replaceAll(dat_start, "");
-		}
-		else {
-			tmp = tmp.replaceAll(dat_end, "");
-		}
-		
-		
-		tmp = tmp.isEmpty() == true ? "a" : tmp;	// 5단계
+		tmp = tmp.replaceAll("[^-_.a-z0-9]", "");	// 2단계
+		tmp = tmp.replaceAll("[.]{2,}", ".");		// 3단계
+		tmp = tmp.replaceAll("^[.]|[.]$", "");	    // 4단계
+        
+        
+        if(tmp.equals("")) {						// 5단계
+       		tmp += "a";	               
+        }
 		
 		
 		int lengthT = tmp.length();
@@ -71,14 +57,15 @@ class SetId {
 
 			lengthT = tmp.length();
 			if( tmp.charAt(lengthT - 1) == '.' ) {
-				tmp = tmp.replace(".", "");
+				tmp = tmp.replaceAll("^[.]|[.]$","");
 			}
 		}
 		
 		
 		if( lengthT <= 2 ) {						// 7단계
-			while( lengthT >= 3 ) {
-				tmp = tmp + tmp.charAt(lengthT);
+			int cnt = lengthT;			
+			for(; cnt < 3; cnt++) {
+				tmp = tmp + tmp.charAt(cnt-1);
 			}
 		}
 		
